@@ -6,7 +6,8 @@
   },
   "dependencies": {
     "express": "^4.17.1",
-    "imba": "^2.0.0-alpha.146"
+    "imba": "^2.0.0-alpha.146",
+    "motion": "^10.4.0"
   },
   "repository": "poeck/paul.koeck.dev",
   "description": "My minimalistic portfolio",
