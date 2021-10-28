@@ -1,0 +1,17 @@
+{
+  "name": "paul.koeck.dev",
+  "scripts": {
+    "start": "imba -w server.imba",
+    "build": "imba build server.imba"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "imba": "^2.0.0-alpha.146"
+  },
+  "repository": "poeck/paul.koeck.dev",
+  "description": "My minimalistic portfolio",
+  "version": "1.0.0",
+  "homepage": "https://github.com/poeck/paul.koeck.dev",
+  "author": "Paul Koeck (https://github.com/poeck)",
+  "license": "ISC"
+}
