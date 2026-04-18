@@ -1,0 +1,38 @@
+---
+import Base from "../layouts/Base.astro";
+---
+
+<Base title="404 | Simon Koeck" description="Page not found.">
+  <div class="py-12 sm:py-20">
+    <pre class="font-mono text-xs sm:text-sm text-zinc-700 leading-tight select-none mb-10">
+{`
+ ██╗  ██╗ ██████╗ ██╗  ██╗
+ ██║  ██║██╔═══██╗██║  ██║
+ ███████║██║   ██║███████║
+ ╚════██║██║   ██║╚════██║
+      ██║╚██████╔╝     ██║
+      ╚═╝ ╚═════╝      ╚═╝`}
+    </pre>
+    <div class="font-mono text-sm space-y-2 text-zinc-500">
+      <p><span class="text-zinc-300">$</span> curl -I https://simonkoeck.com{Astro.url.pathname}</p>
+      <p class="text-red-400">HTTP/1.1 404 Not Found</p>
+      <p>Content-Type: text/html</p>
+      <p>X-Powered-By: curiosity</p>
+    </div>
+    <div class="mt-10 flex gap-4 text-sm">
+      <a
+        href="/"
+        class="text-zinc-400 hover:text-zinc-100 transition-colors"
+      >
+        cd ~
+      </a>
+      <span class="text-zinc-700">|</span>
+      <a
+        href="/writeups"
+        class="text-zinc-400 hover:text-zinc-100 transition-colors"
+      >
+        ls writeups/
+      </a>
+    </div>
+  </div>
+</Base>

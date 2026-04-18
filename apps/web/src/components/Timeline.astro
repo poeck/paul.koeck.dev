@@ -1,0 +1,26 @@
+---
+interface Props {
+  events: Array<{
+    date: string;
+    title: string;
+  }>;
+}
+
+const { events } = Astro.props;
+---
+
+<div class="not-prose my-8">
+  <ol class="relative ml-3 border-l border-zinc-800/60">
+    {
+      events.map((event, i) => (
+        <li class:list={["ml-6", i < events.length - 1 ? "pb-6" : ""]}>
+          <span class="absolute -left-[5px] mt-1.5 size-2.5 rounded-full border-2 border-zinc-700 bg-zinc-900 shadow-[0_0_6px_rgba(113,113,122,0.15)]" />
+          <time class="text-sm font-mono text-zinc-500 leading-none">
+            {event.date}
+          </time>
+          <p class="text-base text-zinc-300 mt-1">{event.title}</p>
+        </li>
+      ))
+    }
+  </ol>
+</div>

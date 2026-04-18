@@ -1,0 +1,75 @@
+---
+import Base from "../../layouts/Base.astro";
+import { getCollection } from "astro:content";
+
+const writeups = (await getCollection("writeups"))
+  .filter((w) => w.data.published)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const severityColors: Record<string, string> = {
+  critical: "text-severity-critical",
+  high: "text-severity-high",
+  medium: "text-severity-medium",
+  low: "text-severity-low",
+  info: "text-severity-info",
+};
+---
+
+<Base
+  title="Security Writeups | Simon Koeck"
+  description="Security vulnerability writeups, bug bounty reports, and research by Simon Koeck."
+>
+  <h1
+    class="text-3xl sm:text-4xl font-medium tracking-tight text-zinc-50 mb-2"
+  >
+    Writeups
+  </h1>
+  <p class="text-zinc-400 mb-14">
+    Security vulnerability writeups and research.
+  </p>
+
+  {
+    writeups.length === 0 ? (
+      <p class="text-zinc-600">No writeups yet.</p>
+    ) : (
+      <div class="space-y-1">
+        {writeups.map((writeup) => (
+          <a
+            href={`/writeups/${writeup.id}`}
+            class="group block py-4 -mx-3 px-3 rounded-lg hover:bg-zinc-900/40 transition-colors"
+          >
+            <div class="flex items-center gap-2.5 mb-1.5 text-sm">
+              <span
+                class:list={[
+                  "font-medium uppercase text-xs tracking-widest",
+                  severityColors[writeup.data.severity],
+                ]}
+              >
+                {writeup.data.severity}
+              </span>
+              <span class="text-zinc-600">/</span>
+              <span class="text-zinc-500">{writeup.data.platform}</span>
+              <span class="text-zinc-600">/</span>
+              <time
+                class="text-zinc-500 font-mono text-xs"
+                datetime={writeup.data.date.toISOString()}
+              >
+                {writeup.data.date.toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "short",
+                  day: "numeric",
+                })}
+              </time>
+            </div>
+            <h2 class="font-medium text-zinc-200 group-hover:text-zinc-50 transition-colors text-base">
+              {writeup.data.title}
+            </h2>
+            <p class="text-sm text-zinc-500 mt-1 leading-relaxed">
+              {writeup.data.summary}
+            </p>
+          </a>
+        ))}
+      </div>
+    )
+  }
+</Base>

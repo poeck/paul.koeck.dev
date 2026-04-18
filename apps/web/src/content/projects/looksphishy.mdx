@@ -1,0 +1,23 @@
+---
+name: LooksPhishy
+url: https://looksphishy.org
+description: Open source phishing URL reporting relay
+hero: /projects/looksphishy.webp
+order: 1
+---
+
+import BrowserFrame from "../../components/BrowserFrame.astro";
+
+<BrowserFrame url="looksphishy.org">
+  <img src="/projects/looksphishy.webp" alt="Screenshot of LooksPhishy" width="1280" height="720" decoding="async" loading="lazy" class="w-full" />
+</BrowserFrame>
+
+Reporting phishing sites is frustrating. You find a malicious URL, and then you have to separately report it to Google Safe Browsing, Netcraft, Cloudflare, the domain registrar, the hosting provider. Most people give up after one or two reports, which means the phishing site stays live on most platforms.
+
+I built LooksPhishy to fix that. You submit a suspicious URL once, and it gets distributed to all major security providers automatically. Google Web Risk, Netcraft, Cloudflare, registrars, hosting providers. One report, full coverage.
+
+The platform verifies each URL against threat intelligence databases before forwarding to prevent false positives from wasting provider resources. You can report through the web form or just forward phishing emails to this@looksphishy.org, and it extracts the malicious links automatically.
+
+Privacy was a core design decision. No cookies, no analytics, no fingerprinting. IP addresses are not retained with reports. The entire relay platform is open source so anyone can audit how reports are handled.
+
+The goal is simple: make it so easy to report phishing that more people actually do it, which means phishing sites get taken down faster across all platforms instead of just one.

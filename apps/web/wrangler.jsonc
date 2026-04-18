@@ -1,0 +1,25 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "simonkoeck-web",
+  "compatibility_date": "2026-04-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "html_handling": "drop-trailing-slash"
+  },
+  "kv_namespaces": [
+    {
+      "binding": "ENGAGEMENT",
+      "id": "8ddfa98223104524ac78d2a6b269872c"
+    }
+  ],
+  "ratelimits": [
+    {
+      "name": "RATE_LIMITER",
+      "namespace_id": "1001",
+      "simple": {
+        "limit": 20,
+        "period": 60
+      }
+    }
+  ]
+}

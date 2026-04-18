@@ -1,0 +1,51 @@
+---
+import Base from "../../layouts/Base.astro";
+import { getCollection, render } from "astro:content";
+
+export async function getStaticPaths() {
+  const projects = await getCollection("projects");
+  return projects.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const { name, url, description, hero } = entry.data;
+const hostname = new URL(url).hostname;
+---
+
+<Base
+  title={`${name} | Simon Koeck`}
+  description={description}
+  og={hero ? { image: new URL(hero, Astro.site).href } : undefined}
+>
+  <article>
+    <header class="mb-10">
+      <a
+        href="/projects"
+        class="text-sm text-zinc-600 hover:text-zinc-400 transition-colors mb-6 inline-block"
+      >
+        &larr; Projects
+      </a>
+      <h1
+        class="text-3xl sm:text-4xl font-medium tracking-tight text-zinc-50 leading-tight mb-3"
+      >
+        {name}
+      </h1>
+      <p class="text-zinc-400 leading-relaxed mb-4">{description}</p>
+      <a
+        href={url}
+        target="_blank"
+        rel="noopener"
+        class="text-sm font-mono text-zinc-500 hover:text-zinc-300 transition-colors"
+      >
+        {hostname}
+      </a>
+    </header>
+    <div class="prose prose-invert prose-base max-w-none">
+      <Content />
+    </div>
+  </article>
+</Base>

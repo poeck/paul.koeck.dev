@@ -1,0 +1,44 @@
+---
+import Writeup from "../../layouts/Writeup.astro";
+import { getCollection, render } from "astro:content";
+
+export async function getStaticPaths() {
+  const writeups = (await getCollection("writeups"))
+    .filter((w) => w.data.published)
+    .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+  return writeups.map((entry, i) => ({
+    params: { slug: entry.id },
+    props: {
+      entry,
+      prev: writeups[i - 1] ?? null,
+      next: writeups[i + 1] ?? null,
+    },
+  }));
+}
+
+const { entry, prev, next } = Astro.props;
+const { Content, headings } = await render(entry);
+
+// Reading time: strip MDX imports/components, count words
+const words = entry.body
+  ?.replace(/import\s+.*?from\s+['"].*?['"]/g, "")
+  .replace(/<[^>]+>/g, "")
+  .replace(/[#*`\[\]()]/g, "")
+  .split(/\s+/)
+  .filter((w) => w.length > 0).length ?? 0;
+const readingTime = Math.max(1, Math.ceil(words / 230));
+
+// Filter to h2/h3 for TOC
+const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
+---
+
+<Writeup
+  entry={entry}
+  prev={prev}
+  next={next}
+  readingTime={readingTime}
+  headings={tocHeadings}
+>
+  <Content />
+</Writeup>

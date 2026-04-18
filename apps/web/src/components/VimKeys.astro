@@ -1,0 +1,175 @@
+---
+// Global vim keybindings for page navigation and command palette
+---
+
+<script>
+  let pendingG = false;
+  let pendingGTimeout: ReturnType<typeof setTimeout> | null = null;
+
+  function isEditing(): boolean {
+    const el = document.activeElement;
+    if (!el) return false;
+    const tag = el.tagName;
+    return (
+      tag === "INPUT" ||
+      tag === "TEXTAREA" ||
+      tag === "SELECT" ||
+      (el as HTMLElement).isContentEditable
+    );
+  }
+
+  function getLinks(): HTMLAnchorElement[] {
+    return Array.from(
+      document.querySelectorAll<HTMLAnchorElement>(
+        "main a[href].group, main a[href].cp-item",
+      ),
+    );
+  }
+
+  function getFocusedIndex(links: HTMLAnchorElement[]): number {
+    return links.findIndex(
+      (l) => l === document.activeElement || l.contains(document.activeElement),
+    );
+  }
+
+  function focusLink(link: HTMLAnchorElement) {
+    link.focus({ preventScroll: true });
+    link.scrollIntoView({ block: "nearest", behavior: "smooth" });
+  }
+
+  // Command palette helpers
+  function cpIsOpen(): boolean {
+    return !document
+      .getElementById("command-palette")
+      ?.classList.contains("hidden");
+  }
+
+  function cpGetItems(): HTMLAnchorElement[] {
+    return Array.from(
+      document.querySelectorAll<HTMLAnchorElement>("#cp-results .cp-item"),
+    );
+  }
+
+  function cpGetActiveIndex(): number {
+    const items = cpGetItems();
+    return items.findIndex((el) => el.classList.contains("bg-zinc-800/70"));
+  }
+
+  function cpSetActive(index: number) {
+    const items = cpGetItems();
+    if (items.length === 0) return;
+    const clamped = Math.max(0, Math.min(index, items.length - 1));
+    items.forEach((el, i) => {
+      el.dataset.index = String(i);
+      if (i === clamped) {
+        el.classList.remove("text-zinc-400");
+        el.classList.add("bg-zinc-800/70", "text-zinc-100");
+        el.scrollIntoView({ block: "nearest" });
+      } else {
+        el.classList.remove("bg-zinc-800/70", "text-zinc-100");
+        el.classList.add("text-zinc-400");
+      }
+    });
+  }
+
+  function clearG() {
+    pendingG = false;
+    if (pendingGTimeout) {
+      clearTimeout(pendingGTimeout);
+      pendingGTimeout = null;
+    }
+  }
+
+  document.addEventListener("keydown", (e) => {
+    // Don't intercept when typing in inputs (except command palette special keys)
+    const inPalette = cpIsOpen();
+    const inputFocused =
+      document.activeElement?.id === "cp-input";
+
+    // Command palette is open — all keys handled there
+    if (inPalette) return;
+
+    // --- Page-level vim keys (only when not editing) ---
+    if (isEditing()) return;
+
+    const key = e.key;
+
+    // / to open command palette (like vim search)
+    if (key === "/" && !e.metaKey && !e.ctrlKey) {
+      e.preventDefault();
+      document.getElementById("cp-trigger")?.click();
+      return;
+    }
+
+    const links = getLinks();
+    const currentIdx = getFocusedIndex(links);
+
+    // j = down, k = up
+    if (key === "j") {
+      e.preventDefault();
+      if (links.length === 0) return;
+      const next = currentIdx < 0 ? 0 : Math.min(currentIdx + 1, links.length - 1);
+      focusLink(links[next]);
+      return;
+    }
+    if (key === "k") {
+      e.preventDefault();
+      if (links.length === 0) return;
+      const prev = currentIdx < 0 ? 0 : Math.max(currentIdx - 1, 0);
+      focusLink(links[prev]);
+      return;
+    }
+
+    // Enter / o = open focused link
+    if ((key === "o" || key === "Enter") && currentIdx >= 0) {
+      e.preventDefault();
+      links[currentIdx].click();
+      return;
+    }
+
+    // gg = go to top, G = go to bottom
+    if (key === "G" && !e.shiftKey === false) {
+      e.preventDefault();
+      if (links.length > 0) {
+        focusLink(links[links.length - 1]);
+      } else {
+        window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+      }
+      clearG();
+      return;
+    }
+
+    if (key === "g") {
+      if (pendingG) {
+        // gg
+        e.preventDefault();
+        if (links.length > 0) {
+          focusLink(links[0]);
+        } else {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+        clearG();
+        return;
+      }
+      pendingG = true;
+      pendingGTimeout = setTimeout(clearG, 500);
+      return;
+    } else {
+      clearG();
+    }
+
+    // H = go home, W = go to writeups, U = go to uses, A = go to about (quick nav)
+    if (key === "H" && !e.ctrlKey) {
+      window.location.href = "/";
+      return;
+    }
+    if (key === "W" && !e.ctrlKey) {
+      window.location.href = "/writeups";
+      return;
+    }
+    if (key === "A" && !e.ctrlKey) {
+      window.location.href = "/about";
+      return;
+    }
+  });
+</script>

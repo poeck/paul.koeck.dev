@@ -1,0 +1,10 @@
+# If you're reading this, you're my kind of person.
+# Yes, I checked the .well-known too.
+
+Contact: mailto:security@simonkoeck.com
+Preferred-Languages: en, de
+Canonical: https://simonkoeck.com/.well-known/security.txt
+Policy: https://simonkoeck.com/about
+
+# Hiring? I also break things professionally.
+# P.S. The real vulnerabilities are the friends we made along the way.

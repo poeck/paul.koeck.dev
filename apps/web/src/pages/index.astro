@@ -1,0 +1,98 @@
+---
+import Base from "../layouts/Base.astro";
+import { getCollection } from "astro:content";
+
+const writeups = (await getCollection("writeups"))
+  .filter((w) => w.data.published)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 5);
+
+const severityColors: Record<string, string> = {
+  critical: "text-severity-critical",
+  high: "text-severity-high",
+  medium: "text-severity-medium",
+  low: "text-severity-low",
+  info: "text-severity-info",
+};
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "Simon Koeck",
+  url: "https://simonkoeck.com",
+  description:
+    "Security researcher and developer. Vulnerability writeups and security research.",
+  author: {
+    "@type": "Person",
+    name: "Simon Koeck",
+    url: "https://simonkoeck.com",
+  },
+};
+---
+
+<Base title="Simon Koeck | Security Researcher & Developer">
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+  <section class="mb-24 flex flex-col sm:flex-row sm:items-center gap-6 sm:gap-8">
+    <img
+      src="/portrait.webp"
+      alt="Simon Koeck"
+      width="448"
+      height="448"
+      decoding="async"
+      fetchpriority="high"
+      class="rounded-full w-28 h-28 object-cover shrink-0"
+    />
+    <div>
+      <h1 class="text-3xl sm:text-4xl font-medium tracking-tight text-zinc-50 leading-tight mb-4">
+        Simon Koeck
+      </h1>
+      <p class="text-zinc-400 text-lg leading-relaxed">
+        Security researcher and developer. I find vulnerabilities<br class="hidden sm:block" /> and write about them.
+      </p>
+    </div>
+  </section>
+
+  {
+    writeups.length > 0 && (
+      <section>
+        <h2 class="text-xs font-mono text-zinc-500 uppercase tracking-widest mb-8">
+          Recent writeups
+        </h2>
+        <div class="space-y-1">
+          {writeups.map((writeup) => (
+            <a
+              href={`/writeups/${writeup.id}`}
+              class="group block py-4 -mx-3 px-3 rounded-lg hover:bg-zinc-900/40 transition-colors"
+            >
+              <div class="flex items-center gap-2.5 mb-1.5 text-sm">
+                <span
+                  class:list={[
+                    "font-medium uppercase text-xs tracking-widest",
+                    severityColors[writeup.data.severity],
+                  ]}
+                >
+                  {writeup.data.severity}
+                </span>
+                <span class="text-zinc-600">/</span>
+                <span class="text-zinc-500">{writeup.data.platform}</span>
+              </div>
+              <h3 class="font-medium text-zinc-200 group-hover:text-zinc-50 transition-colors">
+                {writeup.data.title}
+              </h3>
+              <p class="text-sm text-zinc-500 mt-1 leading-relaxed">
+                {writeup.data.summary}
+              </p>
+            </a>
+          ))}
+        </div>
+        <a
+          href="/writeups"
+          class="inline-block mt-10 text-sm text-zinc-400 hover:text-zinc-300 transition-colors"
+        >
+          All writeups &rarr;
+        </a>
+      </section>
+    )
+  }
+</Base>

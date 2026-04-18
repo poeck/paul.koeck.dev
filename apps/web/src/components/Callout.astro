@@ -1,0 +1,48 @@
+---
+interface Props {
+  type?: "info" | "warning" | "danger" | "tip";
+  title?: string;
+}
+
+const { type = "info", title } = Astro.props;
+
+const config: Record<
+  string,
+  { border: string; accent: string; defaultTitle: string }
+> = {
+  info: {
+    border: "border-blue-500/25",
+    accent: "text-blue-400",
+    defaultTitle: "Note",
+  },
+  warning: {
+    border: "border-yellow-500/25",
+    accent: "text-yellow-400",
+    defaultTitle: "Warning",
+  },
+  danger: {
+    border: "border-red-500/25",
+    accent: "text-red-400",
+    defaultTitle: "Danger",
+  },
+  tip: {
+    border: "border-emerald-500/25",
+    accent: "text-emerald-400",
+    defaultTitle: "Tip",
+  },
+};
+
+const c = config[type]!;
+const displayTitle = title ?? c.defaultTitle;
+---
+
+<aside
+  class:list={["not-prose border-l-2 pl-4 py-1 my-8", c.border]}
+>
+  <p class:list={["text-sm font-medium mb-1.5 tracking-wide uppercase", c.accent]}>
+    {displayTitle}
+  </p>
+  <div class="text-base text-zinc-300 leading-relaxed [&>p]:m-0">
+    <slot />
+  </div>
+</aside>

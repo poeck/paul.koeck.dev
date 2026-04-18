@@ -1,0 +1,65 @@
+---
+// Injected globally — adds a copy button to every <pre> code block
+---
+
+<script>
+  const COPY_ICON = `<rect x="5" y="5" width="9" height="9" rx="1.5"/><path d="M2 10.5V2.5a1 1 0 011-1h8"/>`;
+  const CHECK_ICON = `<path d="M3 8.5l3.5 3.5L13 4.5"/>`;
+
+  function makeSvg(content: string): SVGSVGElement {
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("class", "size-3.5");
+    svg.setAttribute("viewBox", "0 0 16 16");
+    svg.setAttribute("fill", "none");
+    svg.setAttribute("stroke", "currentColor");
+    svg.setAttribute("stroke-width", "1.5");
+    // These SVG shapes are hardcoded constants, not user input
+    svg.append(
+      ...new DOMParser()
+        .parseFromString(
+          `<svg xmlns="http://www.w3.org/2000/svg">${content}</svg>`,
+          "image/svg+xml",
+        )
+        .documentElement.childNodes,
+    );
+    return svg;
+  }
+
+  function setIcon(btn: HTMLButtonElement, content: string) {
+    btn.replaceChildren(makeSvg(content));
+  }
+
+  function init() {
+    document.querySelectorAll("pre").forEach((pre) => {
+      if (pre.parentElement?.classList.contains("code-wrapper")) return;
+
+      const wrapper = document.createElement("div");
+      wrapper.className = "code-wrapper relative group";
+      pre.parentNode!.insertBefore(wrapper, pre);
+      wrapper.appendChild(pre);
+
+      const btn = document.createElement("button");
+      btn.setAttribute("data-copy-btn", "");
+      btn.setAttribute("aria-label", "Copy code");
+      btn.className =
+        "absolute top-2.5 right-2.5 z-10 p-1.5 rounded-md text-zinc-600 hover:text-zinc-400 transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100 cursor-pointer";
+      setIcon(btn, COPY_ICON);
+
+      btn.addEventListener("click", async () => {
+        const code = pre.querySelector("code");
+        if (!code) return;
+        await navigator.clipboard.writeText(code.textContent ?? "");
+        setIcon(btn, CHECK_ICON);
+        btn.classList.add("!text-emerald-500");
+        setTimeout(() => {
+          setIcon(btn, COPY_ICON);
+          btn.classList.remove("!text-emerald-500");
+        }, 1500);
+      });
+
+      wrapper.appendChild(btn);
+    });
+  }
+
+  init();
+</script>

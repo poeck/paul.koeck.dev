@@ -1,0 +1,21 @@
+---
+import Base from "./Base.astro";
+
+interface Props {
+  frontmatter: {
+    title: string;
+    description?: string;
+  };
+}
+
+const { frontmatter } = Astro.props;
+---
+
+<Base title={`${frontmatter.title} | Simon Koeck`} description={frontmatter.description}>
+  <h1 class="text-3xl sm:text-4xl font-medium tracking-tight text-zinc-50 mb-10">
+    {frontmatter.title}
+  </h1>
+  <div class="prose prose-invert prose-base max-w-none">
+    <slot />
+  </div>
+</Base>

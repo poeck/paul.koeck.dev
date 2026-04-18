@@ -1,0 +1,60 @@
+---
+interface Props {
+  method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE" | "HEAD" | "OPTIONS";
+  url: string;
+  headers?: Record<string, string>;
+  body?: string;
+  title?: string;
+}
+
+const { method, url, headers, body, title } = Astro.props;
+
+const methodColors: Record<string, string> = {
+  GET: "text-emerald-400",
+  POST: "text-blue-400",
+  PUT: "text-amber-400",
+  PATCH: "text-orange-400",
+  DELETE: "text-red-400",
+  HEAD: "text-purple-400",
+  OPTIONS: "text-zinc-400",
+};
+
+const headerEntries = headers ? Object.entries(headers) : [];
+---
+
+<div class="not-prose my-8 rounded-lg border border-zinc-800/60 overflow-hidden bg-zinc-900/40">
+  {
+    title && (
+      <div class="px-4 py-2 text-sm font-mono text-zinc-400 border-b border-zinc-800/40">
+        {title}
+      </div>
+    )
+  }
+  <div class="px-4 py-3.5 font-mono text-sm">
+    <div class="flex items-baseline gap-2.5">
+      <span class:list={["font-semibold text-sm", methodColors[method]]}>
+        {method}
+      </span>
+      <span class="text-zinc-400 break-all">{url}</span>
+    </div>
+    {
+      headerEntries.length > 0 && (
+        <div class="mt-3 pt-3 border-t border-zinc-800/40 space-y-1 text-sm">
+          {headerEntries.map(([key, value]) => (
+            <div>
+              <span class="text-zinc-500">{key}:</span>{" "}
+              <span class="text-zinc-400">{value}</span>
+            </div>
+          ))}
+        </div>
+      )
+    }
+    {
+      body && (
+        <div class="mt-3 pt-3 border-t border-zinc-800/40">
+          <pre class="text-sm text-zinc-400 whitespace-pre-wrap break-all m-0 !bg-transparent !border-0 !p-0">{body}</pre>
+        </div>
+      )
+    }
+  </div>
+</div>

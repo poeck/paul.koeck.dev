@@ -1,0 +1,87 @@
+---
+import Base from "../layouts/Base.astro";
+import { Icon } from "astro-icon/components";
+
+const birth = new Date(2004, 7, 2); // August 2, 2004
+const now = new Date();
+let age = now.getFullYear() - birth.getFullYear();
+if (now.getMonth() < birth.getMonth() || (now.getMonth() === birth.getMonth() && now.getDate() < birth.getDate())) {
+  age--;
+}
+---
+
+<Base
+  title="About | Simon Koeck"
+  description="Simon Koeck is a security researcher and developer specializing in finding and responsibly disclosing web application vulnerabilities."
+>
+  <section class="mb-24 flex flex-col sm:flex-row sm:items-center gap-6 sm:gap-8">
+    <img
+      src="/portrait.webp"
+      alt="Simon Koeck"
+      width="448"
+      height="448"
+      decoding="async"
+      fetchpriority="high"
+      class="rounded-full w-28 h-28 object-cover shrink-0"
+    />
+    <div>
+      <h1 class="text-3xl sm:text-4xl font-medium tracking-tight text-zinc-50 leading-tight mb-4">
+        About
+      </h1>
+      <p class="text-zinc-400 text-lg leading-relaxed">
+        Security researcher and developer specializing in web application security.
+      </p>
+    </div>
+  </section>
+
+  <div class="prose prose-invert prose-base max-w-none">
+    <p>
+      I'm a {age}-year-old security researcher and developer from Feldkirch, Austria,
+      now based in Vienna.
+      I started programming when I was 13 and was nearly coding full time alongside school,
+      always curious about how things break as much as how they work.
+      After finishing my Matura at HAK Feldkirch I went straight into working full time
+      rather than university. I learned more from reading source code and finding real
+      vulnerabilities than any curriculum could have taught me.
+    </p>
+    <p>
+      I run <a href="https://shipsecu.re" target="_blank" rel="noopener noreferrer">ShipSecure</a>,
+      where I do manual security audits for indie developers and SaaS founders. I also
+      built <a href="https://looksphishy.org" target="_blank" rel="noopener noreferrer">LooksPhishy</a>,
+      an open source tool that relays phishing reports to all major security providers at once.
+    </p>
+    <p>
+      Outside of security, I care about open source, privacy, and self-hosting.
+      I run NixOS on everything, self-host most of my infrastructure, and have
+      strong opinions about keyboards.
+    </p>
+    <p>
+      This site hosts my security vulnerability writeups and research. All
+      vulnerabilities documented here have been responsibly disclosed and patched
+      before publication.
+    </p>
+  </div>
+
+  <div class="mt-12 flex flex-wrap gap-4 text-sm">
+    <a href="https://github.com/simonkoeck" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-zinc-800/50 text-zinc-400 hover:text-zinc-100 transition-colors">
+      <Icon name="simple-icons:github" class="size-4" />
+      GitHub
+    </a>
+    <a href="https://linkedin.com/in/simonkoeck" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-zinc-800/50 text-zinc-400 hover:text-zinc-100 transition-colors">
+      <Icon name="simple-icons:linkedin" class="size-4" />
+      LinkedIn
+    </a>
+    <a href="https://x.com/soeckly" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-zinc-800/50 text-zinc-400 hover:text-zinc-100 transition-colors">
+      <Icon name="simple-icons:x" class="size-4" />
+      X
+    </a>
+    <a href="https://matrix.to/#/@simon:koeck.dev" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-zinc-800/50 text-zinc-400 hover:text-zinc-100 transition-colors">
+      <Icon name="simple-icons:matrix" class="size-4" />
+      Matrix
+    </a>
+    <a href="mailto:hi@simonkoeck.com" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-zinc-800/50 text-zinc-400 hover:text-zinc-100 transition-colors">
+      <Icon name="lucide:mail" class="size-4" />
+      hi@simonkoeck.com
+    </a>
+  </div>
+</Base>

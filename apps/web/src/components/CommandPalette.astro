@@ -1,0 +1,377 @@
+---
+import { getCollection } from "astro:content";
+
+const writeups = (await getCollection("writeups"))
+  .filter((w) => w.data.published)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const items = [
+  { title: "Home", href: "/", section: "Pages" },
+  { title: "Writeups", href: "/writeups", section: "Pages" },
+  { title: "Projects", href: "/projects", section: "Pages" },
+  { title: "About", href: "/about", section: "Pages" },
+  ...writeups.map((w) => ({
+    title: w.data.title,
+    href: `/writeups/${w.id}`,
+    section: "Writeups",
+    severity: w.data.severity,
+    platform: w.data.platform,
+  })),
+];
+---
+
+<script id="cp-data" type="application/json" set:html={JSON.stringify(items)} />
+
+<div
+  id="command-palette"
+  class="hidden fixed inset-0 z-50"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Command palette"
+  transition:persist="command-palette"
+>
+  <div class="fixed inset-0 bg-black/60 backdrop-blur-sm" id="cp-backdrop"
+  ></div>
+  <div class="relative max-w-lg mx-auto mt-[20vh] px-4">
+    <div
+      class="bg-zinc-900 border border-zinc-800 rounded-xl shadow-2xl overflow-hidden"
+    >
+      <div class="flex items-center gap-3 border-b border-zinc-800 px-4">
+        <svg
+          class="size-4 text-zinc-500 shrink-0"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="m21 21-6-6m2-5a7 7 0 1 1-14 0 7 7 0 0 1 14 0z"></path>
+        </svg>
+        <input
+          id="cp-input"
+          type="text"
+          placeholder="Search writeups…"
+          aria-label="Search writeups"
+          class="w-full bg-transparent py-3.5 text-sm text-zinc-100 placeholder:text-zinc-500 outline-none"
+          autocomplete="off"
+        />
+        <kbd
+          class="text-[10px] font-mono text-zinc-500 border border-zinc-800 rounded px-1.5 py-0.5 shrink-0"
+          >esc</kbd
+        >
+      </div>
+      <div id="cp-results" role="listbox" aria-label="Search results" class="overflow-y-auto max-h-72 py-2"></div>
+      <div
+        id="cp-empty"
+        class="hidden px-4 py-8 text-center text-sm text-zinc-500"
+      >
+        No results found.
+      </div>
+      <div
+        class="border-t border-zinc-800 px-4 py-2.5 flex items-center gap-4 text-[11px] text-zinc-500"
+      >
+        <span class="flex items-center gap-1"
+          ><kbd
+            class="font-mono border border-zinc-800 rounded px-1 py-px text-zinc-500"
+            >&uarr;&darr;</kbd
+          ><span class="text-zinc-700">/</span><kbd
+            class="font-mono border border-zinc-800 rounded px-1 py-px text-zinc-500"
+            >^j ^k</kbd
+          > navigate</span
+        >
+        <span class="flex items-center gap-1"
+          ><kbd
+            class="font-mono border border-zinc-800 rounded px-1 py-px text-zinc-500"
+            >&crarr;</kbd
+          > open</span
+        >
+        <span class="flex items-center gap-1"
+          ><kbd
+            class="font-mono border border-zinc-800 rounded px-1 py-px text-zinc-500"
+            >esc</kbd
+          > close</span
+        >
+        <span class="hidden sm:flex items-center gap-1 ml-auto"
+          ><kbd
+            class="font-mono border border-zinc-800 rounded px-1 py-px text-zinc-500"
+            >/</kbd
+          > from anywhere</span
+        >
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const severityColors: Record<string, string> = {
+    critical: "#dc2626",
+    high: "#ea580c",
+    medium: "#ca8a04",
+    low: "#2563eb",
+    info: "#6b7280",
+  };
+
+  interface Item {
+    title: string;
+    href: string;
+    section: string;
+    severity?: string;
+    platform?: string;
+    excerpt?: string;
+  }
+
+  let items: Item[] = [];
+  let activeIndex = 0;
+  let filteredItems: Item[] = [];
+  let pagefind: any = null;
+  let searchDebounce: ReturnType<typeof setTimeout> | null = null;
+
+  function loadItems(): Item[] {
+    if (items.length) return items;
+    const el = document.getElementById("cp-data");
+    if (el) items = JSON.parse(el.textContent || "[]");
+    return items;
+  }
+
+  async function loadPagefind() {
+    if (pagefind) return pagefind;
+    try {
+      const path = "/pagefind/pagefind.js";
+      pagefind = await import(/* @vite-ignore */ path);
+      await pagefind.init();
+    } catch {
+      pagefind = null;
+    }
+    return pagefind;
+  }
+
+  function getPalette() {
+    return document.getElementById("command-palette");
+  }
+
+  function isOpen() {
+    return !getPalette()?.classList.contains("hidden");
+  }
+
+  function open() {
+    const palette = getPalette();
+    if (!palette) return;
+    palette.classList.remove("hidden");
+    const input = document.getElementById("cp-input") as HTMLInputElement;
+    if (input) {
+      input.value = "";
+      input.focus();
+    }
+    filteredItems = loadItems();
+    activeIndex = 0;
+    render(filteredItems);
+    loadPagefind();
+  }
+
+  function close() {
+    getPalette()?.classList.add("hidden");
+  }
+
+  function createEl(
+    tag: string,
+    className: string,
+    text?: string,
+  ): HTMLElement {
+    const el = document.createElement(tag);
+    el.className = className;
+    if (text) el.textContent = text;
+    return el;
+  }
+
+  function render(list: Item[]) {
+    const results = document.getElementById("cp-results");
+    const empty = document.getElementById("cp-empty");
+    if (!results || !empty) return;
+
+    results.replaceChildren();
+
+    if (list.length === 0) {
+      results.classList.add("hidden");
+      empty.classList.remove("hidden");
+      return;
+    }
+
+    results.classList.remove("hidden");
+    empty.classList.add("hidden");
+
+    let currentSection = "";
+
+    list.forEach((item, i) => {
+      if (item.section !== currentSection) {
+        currentSection = item.section;
+        results.appendChild(
+          createEl(
+            "div",
+            "px-4 pt-3 pb-1 text-[11px] font-medium text-zinc-500 uppercase tracking-widest",
+            currentSection,
+          ),
+        );
+      }
+
+      const a = document.createElement("a");
+      a.href = item.href;
+      a.setAttribute("role", "option");
+      a.setAttribute("aria-selected", String(i === activeIndex));
+      a.dataset.index = String(i);
+      a.className = `cp-item flex flex-col gap-0.5 px-4 py-2.5 text-sm cursor-pointer ${
+        i === activeIndex
+          ? "bg-zinc-800/70 text-zinc-100"
+          : "text-zinc-400"
+      }`;
+
+      const top = createEl("div", "flex items-center gap-3");
+
+      if (item.severity) {
+        const badge = createEl(
+          "span",
+          "text-[10px] font-medium uppercase tracking-wider",
+          item.severity,
+        );
+        badge.style.color = severityColors[item.severity] ?? "#6b7280";
+        top.appendChild(badge);
+      }
+
+      top.appendChild(createEl("span", "truncate", item.title));
+
+      if (item.platform) {
+        top.appendChild(
+          createEl("span", "ml-auto text-xs text-zinc-600 shrink-0", item.platform),
+        );
+      }
+
+      a.appendChild(top);
+
+      if (item.excerpt) {
+        const ex = createEl("div", "text-xs text-zinc-500 truncate");
+        ex.textContent = item.excerpt;
+        a.appendChild(ex);
+      }
+
+      results.appendChild(a);
+    });
+
+    const active = results.querySelector(`[data-index="${activeIndex}"]`);
+    active?.scrollIntoView({ block: "nearest" });
+  }
+
+  async function searchWithPagefind(query: string) {
+    const pf = await loadPagefind();
+    if (!pf) {
+      // Fallback to basic filter
+      return loadItems().filter(
+        (p) =>
+          p.title.toLowerCase().includes(query) ||
+          (p.platform && p.platform.toLowerCase().includes(query)) ||
+          (p.severity && p.severity.includes(query)),
+      );
+    }
+
+    const search = await pf.search(query);
+    const results: Item[] = [];
+
+    // Also filter static pages by title
+    const pageMatches = loadItems()
+      .filter((p) => p.section === "Pages")
+      .filter((p) => p.title.toLowerCase().includes(query));
+    if (pageMatches.length) results.push(...pageMatches);
+
+    // Add pagefind results
+    const pfResults = await Promise.all(
+      search.results.slice(0, 10).map((r: any) => r.data()),
+    );
+
+    for (const r of pfResults) {
+      const url = new URL(r.url, window.location.origin);
+      // Skip if already in static results
+      if (results.some((item) => item.href === url.pathname)) continue;
+      results.push({
+        title: r.meta?.title ?? r.url,
+        href: url.pathname,
+        section: "Search Results",
+        excerpt: r.excerpt?.replace(/<\/?mark>/g, ""),
+      });
+    }
+
+    return results;
+  }
+
+  // Keyboard shortcuts
+  document.addEventListener("keydown", (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+      e.preventDefault();
+      if (isOpen()) {
+        activeIndex = Math.max(activeIndex - 1, 0);
+        render(filteredItems);
+      } else {
+        open();
+      }
+      return;
+    }
+
+    if (!isOpen()) return;
+
+    if (e.key === "Escape") {
+      e.preventDefault();
+      close();
+    } else if ((e.ctrlKey && e.key === "j") || (e.ctrlKey && e.key === "n") || e.key === "ArrowDown") {
+      e.preventDefault();
+      activeIndex = Math.min(activeIndex + 1, filteredItems.length - 1);
+      render(filteredItems);
+    } else if ((e.ctrlKey && e.key === "p") || e.key === "ArrowUp") {
+      e.preventDefault();
+      activeIndex = Math.max(activeIndex - 1, 0);
+      render(filteredItems);
+    } else if (e.key === "Enter") {
+      e.preventDefault();
+      if (filteredItems[activeIndex]) {
+        close();
+        window.location.href = filteredItems[activeIndex].href;
+      }
+    }
+  });
+
+  // Input filtering with pagefind
+  document.addEventListener("input", (e) => {
+    const target = e.target as HTMLElement;
+    if (target.id !== "cp-input") return;
+    const query = (target as HTMLInputElement).value.toLowerCase().trim();
+
+    if (searchDebounce) clearTimeout(searchDebounce);
+
+    if (!query) {
+      filteredItems = loadItems();
+      activeIndex = 0;
+      render(filteredItems);
+      return;
+    }
+
+    searchDebounce = setTimeout(async () => {
+      filteredItems = await searchWithPagefind(query);
+      activeIndex = 0;
+      render(filteredItems);
+    }, 100);
+  });
+
+  // Backdrop, trigger, and result clicks via event delegation
+  document.addEventListener("click", (e) => {
+    const target = e.target as HTMLElement;
+    if (target.id === "cp-backdrop") close();
+    if (target.closest("#cp-trigger")) {
+      e.preventDefault();
+      open();
+    }
+    // Close palette when clicking a result link
+    const resultLink = target.closest(".cp-item");
+    if (resultLink) close();
+  });
+
+  // Close palette on page navigation (View Transitions)
+  document.addEventListener("astro:before-preparation", close);
+</script>
