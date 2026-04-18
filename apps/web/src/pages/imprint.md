@@ -16,10 +16,6 @@ Austria
 Phone: +43 670 6081524\
 Email: paul@koeck.dev
 
-## VAT ID
-
-ATU79683834
-
 ## Business Information
 
 Services in automated data processing and information technology.\

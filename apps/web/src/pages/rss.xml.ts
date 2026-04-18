@@ -7,31 +7,18 @@ export async function GET(context: APIContext) {
     .filter((w) => w.data.published)
     .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
-  const posts = (await getCollection("blog"))
-    .filter((p) => p.data.published)
-    .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
-
-  const items = [
-    ...writeups.map((writeup) => ({
-      title: writeup.data.title,
-      pubDate: writeup.data.date,
-      description: writeup.data.summary,
-      link: `/writeups/${writeup.id}`,
-      categories: writeup.data.tags,
-    })),
-    ...posts.map((post) => ({
-      title: post.data.title,
-      pubDate: post.data.date,
-      description: post.data.summary,
-      link: `/blog/${post.id}`,
-      categories: post.data.tags,
-    })),
-  ].sort((a, b) => b.pubDate.valueOf() - a.pubDate.valueOf());
+  const items = writeups.map((writeup) => ({
+    title: writeup.data.title,
+    pubDate: writeup.data.date,
+    description: writeup.data.summary,
+    link: `/writeups/${writeup.id}`,
+    categories: writeup.data.tags,
+  }));
 
   return rss({
     title: "Paul Koeck",
     description:
-      "Security writeups, blog posts, and research by Paul Koeck.",
+      "Security writeups and research by Paul Koeck.",
     site: context.site!,
     items,
   });

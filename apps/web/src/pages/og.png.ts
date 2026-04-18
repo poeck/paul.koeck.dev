@@ -45,8 +45,7 @@ export const GET: APIRoute = async () => {
                 color: "#71717a",
                 marginTop: "16px",
               },
-              children:
-                "Security researcher and developer",
+              children: "Full-stack developer and security researcher",
             },
           },
           {

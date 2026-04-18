@@ -19,17 +19,6 @@ const writeups = defineCollection({
   }),
 });
 
-const blog = defineCollection({
-  loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/blog" }),
-  schema: z.object({
-    title: z.string(),
-    date: z.coerce.date(),
-    tags: z.array(z.string()).default([]),
-    summary: z.string(),
-    published: z.boolean().default(true),
-  }),
-});
-
 const projects = defineCollection({
   loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/projects" }),
   schema: z.object({
@@ -41,4 +30,4 @@ const projects = defineCollection({
   }),
 });
 
-export const collections = { writeups, blog, projects };
+export const collections = { writeups, projects };

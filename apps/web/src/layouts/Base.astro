@@ -22,7 +22,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
 const {
   title,
-  description = "Paul Koeck — Security researcher and developer. Vulnerability writeups and security research.",
+  description = "Paul Koeck — Full-stack developer and security researcher",
   robots: robotsProp,
   og,
 } = Astro.props;
@@ -113,17 +113,6 @@ const robots =
             ]}
           >
             Writeups
-          </a>
-          <a
-            href="/blog"
-            class:list={[
-              "transition-colors",
-              pathname.startsWith("/blog")
-                ? "text-zinc-200"
-                : "hover:text-zinc-300",
-            ]}
-          >
-            Blog
           </a>
           <a
             href="/projects"

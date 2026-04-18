@@ -24,12 +24,6 @@ export default defineConfig({
         } else if (item.url.endsWith("/writeups")) {
           item.priority = 0.9;
           item.changefreq = "weekly";
-        } else if (item.url.includes("/blog/")) {
-          item.priority = 0.7;
-          item.changefreq = "monthly";
-        } else if (item.url.endsWith("/blog")) {
-          item.priority = 0.8;
-          item.changefreq = "weekly";
         } else {
           item.priority = 0.5;
           item.changefreq = "monthly";
