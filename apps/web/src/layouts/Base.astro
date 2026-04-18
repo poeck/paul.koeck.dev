@@ -104,17 +104,6 @@ const robots =
         </a>
         <div class="flex items-center gap-5 text-sm text-zinc-400">
           <a
-            href="/writeups"
-            class:list={[
-              "transition-colors",
-              pathname.startsWith("/writeups")
-                ? "text-zinc-200"
-                : "hover:text-zinc-300",
-            ]}
-          >
-            Writeups
-          </a>
-          <a
             href="/projects"
             class:list={[
               "transition-colors",
@@ -124,6 +113,17 @@ const robots =
             ]}
           >
             Projects
+          </a>
+          <a
+            href="/writeups"
+            class:list={[
+              "transition-colors",
+              pathname.startsWith("/writeups")
+                ? "text-zinc-200"
+                : "hover:text-zinc-300",
+            ]}
+          >
+            Writeups
           </a>
           <a
             href="/about"

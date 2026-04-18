@@ -1,0 +1,19 @@
+---
+name: Todu
+url: https://github.com/simplifylabs/todu
+description: A CLI that keeps a project's to-do list in a plain TODO.md file
+hero: /projects/todu.gif
+order: 12
+---
+
+import BrowserFrame from "../../components/BrowserFrame.astro";
+
+<BrowserFrame url="github.com/simplifylabs/todu">
+  <img src="/projects/todu.gif" alt="Screenshot of Todu" width="1280" height="720" decoding="async" loading="lazy" class="w-full" />
+</BrowserFrame>
+
+Todu is a command-line to-do list that I now use on basically every project I start. The pitch is simple: your tasks live in a plain `TODO.md` file in the repo, so git tracks them for free, GitHub renders them for free, and your teammates can edit them without installing anything.
+
+The CLI is mostly a convenience layer on top of that file. `todu add`, `todu done`, `todu list`, nothing exotic. The interesting choice is that the file is the source of truth, not some local SQLite database you'll lose next time you switch machines.
+
+It scratches a very personal itch: I want to write down what I'm about to do, I want it next to the code, and I want it to be there in six months when I come back to the project and have forgotten everything.

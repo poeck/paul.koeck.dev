@@ -1,0 +1,19 @@
+---
+name: KeyTap
+url: https://www.keytap.app
+description: An interactive trainer for learning keyboard shortcuts in the apps you already use
+hero: /projects/keytap.png
+order: 9
+---
+
+import BrowserFrame from "../../components/BrowserFrame.astro";
+
+<BrowserFrame url="keytap.app">
+  <img src="/projects/keytap.png" alt="Screenshot of KeyTap" width="1280" height="720" decoding="async" loading="lazy" class="w-full" />
+</BrowserFrame>
+
+I switched from VS Code to Vim a few years back, fell in love with how fast you can move around once your fingers know the shortcuts, and then spent weeks cursing how slow the road from "knowing the shortcut exists" to "actually using it reflexively" was. KeyTap exists because I wanted that road to be shorter, for me and for everyone else.
+
+KeyTap teaches shortcuts the way language apps teach vocabulary. You get small, focused lessons, you use each shortcut until it sticks, and you move on. It covers 21 applications so far, with 199 lessons and over 3,000 shortcuts, and it's taught users around 3,200 distinct shortcuts across those lessons.
+
+Getting the feel right was surprisingly hard. Typing exercises are well-trodden ground, but shortcut practice has weird edges: you cannot just intercept any key combination you want in a browser, and repeated muscle memory drills get demoralizing fast if you don't pace them right.

@@ -1,0 +1,19 @@
+---
+name: Minimal Browser
+url: https://github.com/poeck/MinimalBrowser
+description: A bare-bones desktop browser that accidentally became popular at school
+hero: /projects/browser.png
+order: 18
+---
+
+import BrowserFrame from "../../components/BrowserFrame.astro";
+
+<BrowserFrame url="github.com/poeck/MinimalBrowser">
+  <img src="/projects/browser.png" alt="Screenshot of Minimal Browser" width="1280" height="720" decoding="async" loading="lazy" class="w-full" />
+</BrowserFrame>
+
+Minimal Browser is exactly what the name promises: a desktop web browser built on Electron, with the interface stripped back to the essentials. I built it as a learning project alongside [Minimal Browser's sibling, Minimal Editor](/projects/minimal-editor), mostly to understand how Electron talks to its underlying Chromium.
+
+It then had a second life I really did not plan for. It turned out that, because Minimal Browser was a standalone executable with its own rendering engine, it quietly bypassed my school's network filters. Within a few weeks it had been downloaded thousands of times by students who wanted to watch YouTube during break. That was not the intended use case. It was a very instructive lesson in how software can pick up a life of its own once it leaves your hands.
+
+The project is still up on GitHub for anyone who wants a very simple starting point for an Electron-based browser. Just maybe don't install it on a school computer.

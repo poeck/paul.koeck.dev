@@ -27,6 +27,7 @@ const projects = defineCollection({
     description: z.string(),
     hero: z.string().optional(),
     order: z.number().default(0),
+    active: z.boolean().default(false),
   }),
 });
 

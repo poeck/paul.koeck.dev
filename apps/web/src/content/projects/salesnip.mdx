@@ -1,0 +1,19 @@
+---
+name: SaleSnip
+url: https://salesnip.com
+description: An AI negotiation chatbot that makes shoppers earn their discount
+hero: /projects/salesnip.png
+order: 3
+---
+
+import BrowserFrame from "../../components/BrowserFrame.astro";
+
+<BrowserFrame url="salesnip.com">
+  <img src="/projects/salesnip.png" alt="Screenshot of SaleSnip" width="1280" height="720" decoding="async" loading="lazy" class="w-full" />
+</BrowserFrame>
+
+SaleSnip is a chatbot that stores drop into their checkout flow so customers can negotiate the price with an AI instead of pasting in a generic coupon. A visitor hesitates on a €299 product, the bot opens, they haggle, and if they land inside the store's pre-configured floor price and max discount, the deal closes. If they walk away, the bot catches them on cart abandonment and email too.
+
+The interesting part was not the chat UI, it was the guardrails. Store owners care about margin more than they care about conversion rate in isolation, so every negotiation has to run inside strict pricing rules: minimum floor price, maximum discount, how hard the bot is allowed to push. The AI has to feel like a real salesperson who can say no, not a giveaway machine that capitulates the moment someone asks for 50% off.
+
+I built it because static discount codes are a blunt instrument. They leak, they train customers to always wait for a sale, and they give away the same margin to the person who would have bought at full price and the one who needed the nudge. A negotiated discount only fires when it actually changes the decision, and the customer earns it, which makes them more likely to complete the purchase than if the discount had just been handed to them.

@@ -1,0 +1,12 @@
+---
+name: React Layered
+url: https://github.com/poeck/react-layered
+description: A tiny library that fixes the z-index mess in React projects
+order: 5
+---
+
+Every React project I have worked on eventually ends up with a file somewhere called `zIndex.ts`, full of random numbers like `9999` and `2147483647` next to comments like `// do not touch`. React Layered is my attempt to never write that file again.
+
+Instead of scattering magic numbers across a codebase, you define a single ordered list of layer names (tooltip above modal above dropdown, and so on), and the library hands back the correct z-index values. Reordering layers is a one-line change instead of a hunt-and-replace.
+
+It's a small package, a couple hundred lines of code, but it has quietly become the first thing I reach for on every new project. Sometimes the most useful libraries are the boring ones.

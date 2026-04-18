@@ -1,0 +1,102 @@
+---
+title: "Discord Read Receipts: When, How Often, How Long"
+date: 2026-04-18
+severity: low
+platform: Discord
+tags: [privacy, open-graph, cache-bypass, tracking, discord, http, side-channel]
+summary: "Discord does not have read receipts by design. However, a bug in the OG image proxy reveals not only when a message was viewed, but also how often and for how long."
+published: true
+---
+
+import Callout from "../../components/Callout.astro";
+import Timeline from "../../components/Timeline.astro";
+import HttpRequest from "../../components/HttpRequest.astro";
+
+## The Idea
+
+Discord deliberately does not have read receipts. It's one of the platform's unwritten privacy promises. You can message someone and they can read it without ever letting you know. That design choice is what pulled me into this bug in the first place.
+
+I was looking at how Discord renders link previews. When you paste a URL into a message, the backend fetches the page, parses the OpenGraph meta tags, and shows a preview embed with whatever `og:image` the page declared. The image itself never loads from the original server in a user's client. Discord proxies it through `images-ext-1.discordapp.net` and caches it. That's clearly intentional: if the client loaded the image directly, every recipient opening the channel would generate a hit on the original host, and the sender would learn exactly when each recipient was online and reading.
+
+So the proxy exists to protect recipients from sender-side tracking. That's a good design. I wanted to know how tightly it held up.
+
+## The Normal Flow
+
+When you send a message with a link, this is what happens behind the scenes:
+
+1. The message is sent and the server detects a URL in the content.
+2. Discord's backend fetches the page's HTML and parses the OG tags.
+3. The backend fetches the declared `og:image` to validate it's a real image and to read its dimensions.
+4. If validation passes, the backend creates a proxy URL on `images-ext-1.discordapp.net` and embeds that in the message.
+5. The first client (usually the sender itself) that views the message causes the proxy to fetch and cache the image.
+6. Everyone else views the cached copy. The origin never sees them.
+
+Step 6 is the privacy guarantee. The image url gets two request, one for validating the image and one for populating the cache in the proxy. After that, silence. However many people open the channel, the origin learns nothing.
+
+So the question becomes: what if the cache never fills?
+
+## The Bypass
+
+The validation fetch and the proxy fetch are separate. The validation fetch just needs to return *something that looks like an image* so the embed is created. The proxy fetch is the one that actually populates the cache. If I can distinguish those two requests on my server, I can return a valid image for the first one and poison the second.
+
+The requests are easy to tell apart. The validation fetch happens immediately when the message is sent. The proxy fetch happens the first time a client renders the embed, which is usually seconds later, and it comes from a different user agent. I just needed my server to hand out a real image once, then start returning `500 Internal Server Error` for everything after that.
+
+When the proxy gets a 500, it doesn't cache the response. It gives up and propagates the failure to the client. And here's where the second half of the bug kicks in.
+
+## The Retry Pattern
+
+Discord's client sees a failed image load and retries. Not once. Six times, with increasing delays:
+
+```
+Request 1 → wait 2s → Request 2 → wait 3s → Request 3 → wait 4s
+         → Request 4 → wait 5s → Request 5 → wait 6s → Request 6
+```
+
+Every retry is a fresh fetch through the proxy, and every one of those proxy fetches hits my origin because nothing ever got cached. Six log lines per viewer, spaced in a predictable rhythm.
+
+That's not just a read receipt. That's a timing signal. The total window is roughly 20 seconds (2 + 3 + 4 + 5 + 6), and if the viewer closes the message before the sequence completes, the remaining retries never fire. Counting how many of the six requests arrived tells me roughly how long the message embed was on screen.
+
+## Proof of Concept
+
+<img src="/writeups/discord.jpg" class="rounded-xl" />
+
+I built a small PoC app that automates the whole thing. You create a tracking link with a slug and a redirect URL, and share the resulting link anywhere on Discord. A few details worth calling out:
+
+**Session grouping.** The raw log is just a stream of timestamps from anonymous IPs. Because the retry cadence is deterministic, I could cluster bursts of requests back into view sessions. Five requests spaced at 2/3/4/5 seconds from the same IP is one person reading for about 14 seconds. The pattern is rigid enough that even in a busy group channel the sessions come apart pretty cleanly.
+
+**Extending the window.** The 20-second limit felt short. I added an artificial 30-second delay (which is the maximum) to each response before sending the 500, which stretches the retry chain dramatically. The client is blocked waiting for my response during that delay, so the wait-between-retries resets. Six retries with 30 seconds of server-side stall each pushes the total tracking window past three minutes.
+
+**Cloudflare warmup.** Cloudflare sits in front of Discord's image proxy, and occasionally it caches the 500 responses, which breaks the whole scheme. The fix is a warm-up step: post the link in a throwaway channel first and wait a minute or two. That stabilizes Cloudflare's cache state (the validation fetch resolves cleanly, the 500s get classified as non-cacheable), and the link then works reliably when pasted into the real target.
+
+**User-agent branching.** The slug handler inspects the incoming `User-Agent`. If it matches Discord's link preview fetcher, it returns an HTML page with a crafted `og:image` pointing at the tracking endpoint. Everyone else gets a 302 to some redirect url. Normal users never even see the intermediate page and just think it's a normal redirect link.
+
+## Hiding the Link and Image
+
+Hiding the image is easy: just serve a transparent 1x1 pixel PNG and the embed becomes effectively invisible.
+
+One problem remained: Sometimes you don't want to add a visible link to your message. Markdown to the rescue: `[text](url)` lets you label a link with arbitrary text.
+
+Most whitespace-like characters (normal spaces, zero-width spaces) aren't allowed by Discord's markdown renderer. The link falls apart. But some unusual characters do work. The italic lowercase rho (U+1D75A, "𝃚") is tiny, rendered as a barely visible sliver, and the markdown parser accepts it as link text:
+
+```md
+[𝃚](https://example.com/)
+```
+
+The link is nearly invisible, but the embed image still renders.
+
+## Impact
+
+What a sender can learn:
+
+- **When it was read.** The first retry arrives the moment the recipient's client renders the embed, so the sender knows exactly when the message was opened.
+- **How often it was read.** In servers and group chats, each viewer produces their own burst of retries. Clustering those bursts gives a reliable count of how many people opened the message and when.
+- **How long they read.** The number of retries that landed before the client gave up maps to the time the embed was visible.
+
+## Timeline
+
+<Timeline events={[
+  { date: "2024-12-21", title: "Vulnerability reported to Discord via HackerOne" },
+  { date: "2025-01-03", title: "Report triaged, initial severity assessment" },
+  { date: "2025-01-15", title: "Validity confirmed, bounty paid, report resolved" },
+  { date: "2025-02-10", title: "Public disclosure approved" },
+]} />
