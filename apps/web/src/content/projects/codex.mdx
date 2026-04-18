@@ -1,0 +1,19 @@
+---
+name: Codex
+url: https://github.com/simplifylabs/codex
+description: A mobile game that turns barcodes on real products into collectible trading cards
+hero: /projects/codex.png
+order: 11
+---
+
+import BrowserFrame from "../../components/BrowserFrame.astro";
+
+<BrowserFrame url="github.com/simplifylabs/codex">
+  <img src="/projects/codex.png" alt="Screenshot of Codex" width="1280" height="720" decoding="async" loading="lazy" class="w-full" />
+</BrowserFrame>
+
+Codex is a mobile game that turns every supermarket trip into a low-key trading card hunt. You scan a barcode on any product, and the app deterministically generates a card for it, with a score from 1 to 100 and a rarity. Hunting for legendary cards makes shopping for groceries unreasonably fun.
+
+The trick is that the barcode digits themselves are the seed for the card generator. Two different devices, even offline, will generate the exact same card for the same barcode. There is no central database of "which card is this", no server call, no way to cheat, the maths does all the work.
+
+With millions of unique barcodes in the wild, the set of discoverable cards is effectively unbounded. I built it mostly as an experiment in deterministic generation and mobile barcode scanning, but the "oh, what's in this one?" instinct turned out to be very hard to switch off.

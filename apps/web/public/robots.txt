@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /portrait.jpg
 
-Sitemap: https://simonkoeck.com/sitemap-index.xml
+Sitemap: https://paul.koeck.dev/sitemap-index.xml

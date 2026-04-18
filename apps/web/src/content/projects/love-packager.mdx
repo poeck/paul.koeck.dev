@@ -1,0 +1,12 @@
+---
+name: Love Packager
+url: https://github.com/simplifylabs/love-packager
+description: A CLI that turns Love2D projects into distributable executables without the usual pain
+order: 14
+---
+
+[Love2D](https://love2d.org/) is a lovely little game engine, but the step between "my game runs with `love .`" and "I have an executable I can send to a friend" is unreasonably painful. I found this out the hard way while shipping a client project.
+
+I tried the existing packagers first. They were either over-engineered for what I needed, or quietly broken in ways that only surfaced halfway through the build. After the third round of yak-shaving I gave up and wrote my own, which is how Love Packager exists.
+
+The CLI is deliberately boring. Point it at a Love2D project, tell it which platforms you want, and it spits out executables. That's the whole thing. It's one of those cases where the value isn't really in any clever code, it's in the fact that it just works when the alternatives don't.

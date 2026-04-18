@@ -1,24 +1,20 @@
 ---
 layout: ../layouts/Page.astro
 title: Imprint
-description: Legal imprint and contact information for simonkoeck.com.
+description: Legal imprint and contact information for paul.koeck.dev.
 ---
 
 ## Information pursuant to § 5 ECG
 
-Simon Koeck\
+Paul Koeck\
 Wolf-Huber-Straße 31\
 6800 Feldkirch\
 Austria
 
 ## Contact
 
-Phone: +43 670 6032428\
-Email: simon@koeck.dev
-
-## VAT ID
-
-ATU79683834
+Phone: +43 670 6081524\
+Email: paul@koeck.dev
 
 ## Business Information
 

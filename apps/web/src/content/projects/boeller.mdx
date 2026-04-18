@@ -1,0 +1,19 @@
+---
+name: Böller Architecture
+url: https://boeller.vercel.app
+description: Website for a Swiss architecture firm, fully editable without touching code
+hero: /projects/boeller.png
+order: 10
+---
+
+import BrowserFrame from "../../components/BrowserFrame.astro";
+
+<BrowserFrame url="boeller.vercel.app">
+  <img src="/projects/boeller.png" alt="Screenshot of Böller Architecture" width="1280" height="720" decoding="async" loading="lazy" class="w-full" />
+</BrowserFrame>
+
+Architekturbüro Böller is a Swiss architecture office that needed a proper website to showcase their projects. They wanted something that looked clean, ran fast, and let them add new projects themselves without calling a developer every time.
+
+I built the frontend in Next.js with Tailwind, and paired it with Strapi as a headless CMS. Every project page, every image, every block of copy comes from Strapi and gets baked into the static site at build time through `getStaticProps`. The result is a site that loads almost instantly, scores well on SEO, and can still be updated by someone who has never seen a line of code.
+
+This was one of the first freelance projects where I really internalized that the code is only half the product. The other half is whether the people paying for it feel confident running it after I hand over the keys.

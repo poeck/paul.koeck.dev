@@ -3,7 +3,8 @@ name: AuthFill
 url: https://authfill.com
 description: Open-source browser extension that autofills email verification codes with one click
 hero: /projects/authfill.jpg
-order: 3
+order: 2
+active: true
 ---
 
 import BrowserFrame from "../../components/BrowserFrame.astro";
@@ -16,6 +17,6 @@ AuthFill is a browser extension that eliminates the most annoying part of signin
 
 When a site asks you to verify your email, AuthFill connects to your inbox over IMAP, finds the right email (including spam), and fills the code directly into the page. It works with any email provider that supports IMAP.
 
-I built this together with my brother [Paul](https://paul.koeck.dev). We were both tired of the same friction every time we signed up for something, and nothing existed that solved it well.
+I built this together with my brother [Simon](https://simonkoeck.com). We were both tired of the same friction every time we signed up for something, and nothing existed that solved it well.
 
 AuthFill is fully open source (GPL-3.0) and privacy-focused. Credentials and email content stay on your device. The IMAP connection is temporarily proxied through our server, but nothing is stored. If that's not enough, you can self-host the proxy for complete control.

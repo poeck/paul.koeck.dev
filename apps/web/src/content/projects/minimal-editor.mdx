@@ -1,0 +1,19 @@
+---
+name: Minimal Editor
+url: https://github.com/poeck/MinimalEditor
+description: A stripped-down desktop text editor built to learn Electron
+hero: /projects/editor.png
+order: 17
+---
+
+import BrowserFrame from "../../components/BrowserFrame.astro";
+
+<BrowserFrame url="github.com/poeck/MinimalEditor">
+  <img src="/projects/editor.png" alt="Screenshot of Minimal Editor" width="1280" height="720" decoding="async" loading="lazy" class="w-full" />
+</BrowserFrame>
+
+Minimal Editor was one of my first real attempts at building a desktop app, and the point of it was honestly less "build the best text editor" and more "figure out how ElectronJS works end to end". That said, the thing it tries to be, it actually does pretty well.
+
+It's a tiny editor with the basics: text manipulation shortcuts, syntax highlighting for a decent range of languages, and not much else. No plugin system, no command palette, no tabs. When you just need to open a file, change three lines, and close it, it beats launching a full IDE.
+
+A companion project, [Minimal Browser](/projects/minimal-browser), came out of the same burst of "let me poke at Electron and see what comes out".

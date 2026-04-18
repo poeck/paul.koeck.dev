@@ -22,7 +22,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
 const {
   title,
-  description = "Simon Koeck — Security researcher and developer. Vulnerability writeups and security research.",
+  description = "Paul Koeck — Full-stack developer and security researcher",
   robots: robotsProp,
   og,
 } = Astro.props;
@@ -46,7 +46,7 @@ const robots =
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalURL} />
-    <meta name="author" content="Simon Koeck" />
+    <meta name="author" content="Paul Koeck" />
     <meta name="robots" content={robots} />
     <link rel="alternate" hreflang="en" href={canonicalURL} />
 
@@ -57,7 +57,7 @@ const robots =
     <link
       rel="alternate"
       type="application/rss+xml"
-      title="Simon Koeck"
+      title="Paul Koeck"
       href="/rss.xml"
     />
     <meta name="theme-color" content="#09090b" />
@@ -68,7 +68,7 @@ const robots =
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={ogImage} />
-    <meta property="og:site_name" content="Simon Koeck" />
+    <meta property="og:site_name" content="Paul Koeck" />
     <meta property="og:locale" content="en_US" />
     {
       og?.article?.publishedTime && (
@@ -100,31 +100,9 @@ const robots =
           href="/"
           class="text-zinc-50 font-mono text-sm tracking-tight"
         >
-          <span class="text-zinc-600">~$</span> simonkoeck
+          <span class="text-zinc-600">~$</span> paulkoeck
         </a>
         <div class="flex items-center gap-5 text-sm text-zinc-400">
-          <a
-            href="/writeups"
-            class:list={[
-              "transition-colors",
-              pathname.startsWith("/writeups")
-                ? "text-zinc-200"
-                : "hover:text-zinc-300",
-            ]}
-          >
-            Writeups
-          </a>
-          <a
-            href="/blog"
-            class:list={[
-              "transition-colors",
-              pathname.startsWith("/blog")
-                ? "text-zinc-200"
-                : "hover:text-zinc-300",
-            ]}
-          >
-            Blog
-          </a>
           <a
             href="/projects"
             class:list={[
@@ -135,6 +113,17 @@ const robots =
             ]}
           >
             Projects
+          </a>
+          <a
+            href="/writeups"
+            class:list={[
+              "transition-colors",
+              pathname.startsWith("/writeups")
+                ? "text-zinc-200"
+                : "hover:text-zinc-300",
+            ]}
+          >
+            Writeups
           </a>
           <a
             href="/about"
@@ -166,7 +155,7 @@ const robots =
       <slot />
     </main>
     <footer class="max-w-2xl mx-auto px-6 pb-10 flex items-center justify-between text-xs text-zinc-400">
-      <span>&copy; {new Date().getFullYear()} Simon Koeck. All rights reserved.</span>
+      <span>&copy; {new Date().getFullYear()} Paul Koeck. All rights reserved.</span>
       <div class="flex gap-4">
         <a href="/imprint" class="hover:text-zinc-400 transition-colors">Imprint</a>
         <a href="/privacy" class="hover:text-zinc-400 transition-colors">Privacy</a>

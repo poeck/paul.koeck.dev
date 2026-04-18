@@ -1,0 +1,12 @@
+---
+name: Uniquer
+url: https://github.com/simplifylabs/uniquer
+description: A one-line file writer that silently deduplicates identical contents
+order: 13
+---
+
+Uniquer is a very small npm package with one job: when you ask it to save a file, it only actually writes the file if the same content has not been saved before. Same bytes, same file. Different bytes, new file. No duplicates, no manual bookkeeping.
+
+Under the hood it's about as simple as you would expect: hash the contents with SHA-256, use that hash (plus the extension) as the filename, and skip the write if the file already exists on disk. A few benefits fall out of that: no more clever naming schemes, no wasted disk space from near-identical uploads, and fewer unnecessary writes on slow storage.
+
+It's one of those tiny utilities I wrote for a specific project and then kept reaching for. If you have ever built an upload pipeline, a caching layer, or anything that accidentally grows a "duplicates" folder, it's the kind of thing that pays for itself quickly.

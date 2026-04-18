@@ -11,3 +11,6 @@
 
 /pagefind/*
   Cache-Control: public, max-age=3600
+
+/portrait.jpg
+  X-Robots-Tag: noindex, noimageindex

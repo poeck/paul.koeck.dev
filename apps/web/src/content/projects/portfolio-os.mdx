@@ -1,0 +1,19 @@
+---
+name: PortfolioOS
+url: https://poeck.gumroad.com/l/portfolio-os
+description: My previous portfolio, built as a fully interactive fake operating system
+hero: /projects/portfolio-os.png
+order: 20
+---
+
+import BrowserFrame from "../../components/BrowserFrame.astro";
+
+<BrowserFrame>
+  <img src="/projects/portfolio-os.png" alt="PortfolioOS banner" width="1280" height="800" decoding="async" loading="lazy" class="w-full" />
+</BrowserFrame>
+
+Before this site, my portfolio was a fake operating system that lived in the browser. Windows, a taskbar, draggable icons, a fake file explorer, the whole thing. You'd open "Projects" like a folder, double-click a project, and get a window with screenshots and copy inside.
+
+The concept came out of my earlier [Terminal Portfolio](/projects/terminal-portfolio) project. After running that for about a year I wanted something bigger, and "what if the portfolio was the operating system" felt like the natural escalation. I started in 2022, got distracted by other work, and finally finished it in 2024.
+
+Right before I shipped it, I stumbled across [Dustin Brett's portfolio](https://dustinbrett.com/), which is genuinely one of the most impressive personal sites I have ever seen and does a very similar thing. That could have felt demoralizing, but it mostly just made me want to ship sooner. The whole thing is template-ready and configurable from a single YAML file, and I ended up selling it on Gumroad for anyone who wants to start with the same base. This current site is what replaced it when I decided I wanted something faster and less flashy for writeups.

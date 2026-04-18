@@ -1,0 +1,19 @@
+---
+name: Crax
+url: https://crax.vercel.app
+description: A research concept that guesses combination lock pins from failed attempts
+hero: /projects/crax.png
+order: 8
+---
+
+import BrowserFrame from "../../components/BrowserFrame.astro";
+
+<BrowserFrame url="crax.vercel.app">
+  <img src="/projects/crax.png" alt="Screenshot of Crax" width="1280" height="720" decoding="async" loading="lazy" class="w-full" />
+</BrowserFrame>
+
+Crax started as a thought experiment. Most people who own a combination lock don't use a fresh random pin. They take an existing one and nudge one or two digits. I wondered how much that habit leaks, and whether you could reconstruct the real pin just from watching failed attempts.
+
+It turns out, quite a bit. Crax is a small web app that takes in a list of observed failed pins and runs them through a set of heuristics based on how people actually change combinations. With enough samples, the correct pin usually ends up in the top handful of guesses.
+
+This is firmly an educational project. Real lock-picking attacks are faster and less theatrical than this, and Crax is aimed at making a point about how predictable humans are rather than being a practical tool. If anything, the lesson is: when you change your lock's pin, please actually change it.

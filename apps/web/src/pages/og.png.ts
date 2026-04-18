@@ -34,7 +34,7 @@ export const GET: APIRoute = async () => {
                 letterSpacing: "-0.025em",
                 lineHeight: 1.2,
               },
-              children: "Simon Koeck",
+              children: "Paul Koeck",
             },
           },
           {
@@ -45,8 +45,7 @@ export const GET: APIRoute = async () => {
                 color: "#71717a",
                 marginTop: "16px",
               },
-              children:
-                "Security researcher and developer",
+              children: "Full-stack developer and security researcher",
             },
           },
           {
@@ -57,7 +56,7 @@ export const GET: APIRoute = async () => {
                 fontSize: "18px",
                 marginTop: "auto",
               },
-              children: "simonkoeck.com",
+              children: "paul.koeck.dev",
             },
           },
         ],

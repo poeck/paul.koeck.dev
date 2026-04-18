@@ -1,0 +1,19 @@
+---
+name: Spaceping
+url: https://www.spaceping.com
+description: A platform for sending messages from a million people into space on a rocket
+hero: /projects/spaceping.png
+order: 7
+---
+
+import BrowserFrame from "../../components/BrowserFrame.astro";
+
+<BrowserFrame url="spaceping.com">
+  <img src="/projects/spaceping.png" alt="Screenshot of Spaceping" width="1280" height="720" decoding="async" loading="lazy" class="w-full" />
+</BrowserFrame>
+
+One day I got a Fiverr message from someone asking if I was available to join their team. The call turned out to be with Ortwin Kartmann, the founder of Sofort. He pitched an idea that sounded slightly unhinged until I remembered who was saying it: collect short messages from a million people, compile them, and send them to space on an actual rocket.
+
+We had two months. About a week in, I pulled in my brother [Simon](https://simon.koeck.dev) to help, and the three of us somehow shipped it on time. The site is basically a very high-trust form, but everything behind it (payments, moderation, the data pipeline that eventually produces the capsule payload) had to be solid.
+
+Working on Spaceping was one of those rare projects where the product itself is the pitch. You can skip the marketing if your website's answer to "what is this" is "your message on a rocket".

@@ -1,12 +1,12 @@
 ---
 layout: ../layouts/Page.astro
 title: Privacy Policy
-description: Privacy policy for simonkoeck.com.
+description: Privacy policy for paul.koeck.dev.
 ---
 
 ## Overview
 
-This website is operated by Simon Koeck. I take your privacy seriously. This page explains what data is collected and how it is used.
+This website is operated by Paul Koeck. I take your privacy seriously. This page explains what data is collected and how it is used.
 
 ## Hosting
 
@@ -34,11 +34,11 @@ This site contains links to external websites (e.g., GitHub, NVD). These sites h
 
 ## Your Rights
 
-Under the GDPR, you have the right to access, rectify, or delete any personal data. Since this website does not collect personal data, there is typically nothing to request. If you have questions, contact me at [simon@koeck.dev](mailto:simon@koeck.dev).
+Under the GDPR, you have the right to access, rectify, or delete any personal data. Since this website does not collect personal data, there is typically nothing to request. If you have questions, contact me at [paul@koeck.dev](mailto:paul@koeck.dev).
 
 ## Contact
 
-Simon Koeck
+Paul Koeck
 Wolf-Huber-Straße 31
 6800 Feldkirch, Austria
-Email: [simon@koeck.dev](mailto:simon@koeck.dev)
+Email: [paul@koeck.dev](mailto:paul@koeck.dev)

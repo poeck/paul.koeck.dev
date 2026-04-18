@@ -18,39 +18,28 @@ const severityColors: Record<string, string> = {
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  name: "Simon Koeck",
-  url: "https://simonkoeck.com",
+  name: "Paul Koeck",
+  url: "https://paul.koeck.dev",
   description:
     "Security researcher and developer. Vulnerability writeups and security research.",
   author: {
     "@type": "Person",
-    name: "Simon Koeck",
-    url: "https://simonkoeck.com",
+    name: "Paul Koeck",
+    url: "https://paul.koeck.dev",
   },
 };
 ---
 
-<Base title="Simon Koeck | Security Researcher & Developer">
+<Base title="Paul Koeck | Security Researcher & Developer">
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 
-  <section class="mb-24 flex flex-col sm:flex-row sm:items-center gap-6 sm:gap-8">
-    <img
-      src="/portrait.webp"
-      alt="Simon Koeck"
-      width="448"
-      height="448"
-      decoding="async"
-      fetchpriority="high"
-      class="rounded-full w-28 h-28 object-cover shrink-0"
-    />
-    <div>
-      <h1 class="text-3xl sm:text-4xl font-medium tracking-tight text-zinc-50 leading-tight mb-4">
-        Simon Koeck
-      </h1>
-      <p class="text-zinc-400 text-lg leading-relaxed">
-        Security researcher and developer. I find vulnerabilities<br class="hidden sm:block" /> and write about them.
-      </p>
-    </div>
+  <section class="mb-20 flex flex-col">
+    <h1 class="text-3xl sm:text-4xl font-medium tracking-tight text-zinc-50 leading-tight mb-2">
+      Paul Koeck
+    </h1>
+    <p class="text-zinc-400 text-lg leading-relaxed">
+      Full-stack developer and security researcher.
+    </p>
   </section>
 
   {

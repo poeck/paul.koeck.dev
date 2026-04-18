@@ -110,7 +110,7 @@ export const GET: APIRoute = async ({ props }) => {
                 color: "#3f3f46",
                 fontSize: "18px",
               },
-              children: "simonkoeck.com",
+              children: "paul.koeck.dev",
             },
           },
         ],

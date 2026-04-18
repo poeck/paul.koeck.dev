@@ -1,0 +1,22 @@
+---
+name: BlinkDisk
+url: https://blinkdisk.com
+description: An end-to-end encrypted desktop backup app that works with any storage backend
+hero: /projects/blinkdisk.png
+order: 1
+active: true
+---
+
+import BrowserFrame from "../../components/BrowserFrame.astro";
+
+<BrowserFrame url="blinkdisk.com">
+  <img src="/projects/blinkdisk.png" alt="Screenshot of BlinkDisk" width="1280" height="800" decoding="async" loading="lazy" class="w-full" />
+</BrowserFrame>
+
+BlinkDisk is a desktop backup app that lets you protect your files against the usual suspects (hardware failure, accidental deletion, ransomware) without having to think about where the data actually goes. You pick folders, you pick a destination, and everything gets encrypted on your machine before it leaves it. Not even we can read your backups.
+
+The flexibility on the storage side is where it gets interesting. You can back up to a local drive, a NAS, SFTP, WebDAV, any S3-compatible bucket, Google Cloud, Azure, or one of the many Rclone remotes. If you do not want to run your own infrastructure, there is CloudBlink, our managed storage service that works out of the box. The same app, the same encryption, just fewer decisions to make.
+
+Under the hood BlinkDisk builds on top of [Kopia](https://kopia.io), which handles the heavy lifting around deduplication, snapshotting, and repository management. The desktop layer is Electron with a TypeScript and React frontend, and the marketing site is Astro. The whole thing is open source under AGPL-3.0, packaged for Windows, macOS, and Linux (including AppImage, deb, and rpm).
+
+The goal was a backup tool that a non-technical person could actually set up in five minutes, but that a technical person could trust, inspect, and self-host if they wanted to. Most backup apps pick one side of that tradeoff. BlinkDisk tries to do both.

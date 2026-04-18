@@ -51,7 +51,7 @@ const slug = entry.id;
 const ogImage = new URL(`/og/${slug}.png`, Astro.site).href;
 const pageUrl = new URL(`/writeups/${slug}`, Astro.site).href;
 
-const pageTitle = [cve, title].filter(Boolean).join(": ") + " | Simon Koeck";
+const pageTitle = [cve, title].filter(Boolean).join(": ") + " | Paul Koeck";
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -64,13 +64,13 @@ const jsonLd = {
   mainEntityOfPage: { "@type": "WebPage", "@id": pageUrl },
   author: {
     "@type": "Person",
-    name: "Simon Koeck",
-    url: "https://simonkoeck.com",
+    name: "Paul Koeck",
+    url: "https://paul.koeck.dev",
   },
   publisher: {
     "@type": "Person",
-    name: "Simon Koeck",
-    url: "https://simonkoeck.com",
+    name: "Paul Koeck",
+    url: "https://paul.koeck.dev",
   },
   keywords: tags.join(", "),
 };
@@ -79,8 +79,8 @@ const breadcrumbLd = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
   itemListElement: [
-    { "@type": "ListItem", position: 1, name: "Home", item: "https://simonkoeck.com" },
-    { "@type": "ListItem", position: 2, name: "Writeups", item: "https://simonkoeck.com/writeups" },
+    { "@type": "ListItem", position: 1, name: "Home", item: "https://paul.koeck.dev" },
+    { "@type": "ListItem", position: 2, name: "Writeups", item: "https://paul.koeck.dev/writeups" },
     { "@type": "ListItem", position: 3, name: title, item: pageUrl },
   ],
 };

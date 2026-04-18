@@ -1,0 +1,19 @@
+---
+name: Terminal Portfolio
+url: https://github.com/poeck/TerminalPortfolio
+description: My old portfolio, rendered as a fake terminal you could actually type into
+hero: /projects/terminal.png
+order: 19
+---
+
+import BrowserFrame from "../../components/BrowserFrame.astro";
+
+<BrowserFrame url="github.com/poeck/TerminalPortfolio">
+  <img src="/projects/terminal.png" alt="Screenshot of Terminal Portfolio" width="1280" height="720" decoding="async" loading="lazy" class="w-full" />
+</BrowserFrame>
+
+At some point every developer needs a portfolio site, and I wanted mine to feel like the kind of interface I actually spend my day in. So my first real portfolio was a fake terminal. You landed on it, saw a prompt, and navigated through my work by running commands like `about`, `projects`, and `contact`.
+
+It was a deliberately weird choice. A lot of people who visited probably expected something more conventional, but the folks who stuck around and typed `help` seemed to enjoy it. More importantly, it was far more fun to build than a traditional landing page would have been.
+
+Terminal Portfolio eventually evolved into something even more over-the-top, an entire fake operating system in the browser. You can read about that iteration in the [PortfolioOS writeup](/projects/portfolioos). Not long after, I discovered [terminal.satnaing.dev](https://terminal.satnaing.dev/), which is an even nicer take on the same idea. Very much worth a look.
