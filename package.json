@@ -1,5 +1,5 @@
 {
-  "name": "simonkoeck.com",
+  "name": "paul.koeck.dev",
   "private": true,
   "scripts": {
     "build": "turbo run build",

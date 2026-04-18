@@ -7,7 +7,7 @@ import tailwindcss from "@tailwindcss/vite";
 import rehypeExternalLinks from "rehype-external-links";
 
 export default defineConfig({
-  site: "https://simonkoeck.com",
+  site: "https://paul.koeck.dev",
   trailingSlash: "never",
   output: "static",
   adapter: cloudflare({ prerenderEnvironment: "node" }),
@@ -15,7 +15,7 @@ export default defineConfig({
     mdx(),
     sitemap({
       serialize(item) {
-        if (item.url === "https://simonkoeck.com/") {
+        if (item.url === "https://paul.koeck.dev/") {
           item.priority = 1.0;
           item.changefreq = "weekly";
         } else if (item.url.includes("/writeups/")) {
@@ -65,7 +65,7 @@ prefetch: {
         rel(element) {
           const href = element.properties?.href;
           if (typeof href === "string" && (
-            href.includes("simonkoeck.com") ||
+            href.includes("paul.koeck.dev") ||
             href.includes("shipsecu.re") ||
             href.includes("looksphishy.org") ||
             href.includes("namply.com")

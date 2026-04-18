@@ -29,9 +29,9 @@ export async function GET(context: APIContext) {
   ].sort((a, b) => b.pubDate.valueOf() - a.pubDate.valueOf());
 
   return rss({
-    title: "Simon Koeck",
+    title: "Paul Koeck",
     description:
-      "Security writeups, blog posts, and research by Simon Koeck.",
+      "Security writeups, blog posts, and research by Paul Koeck.",
     site: context.site!,
     items,
   });

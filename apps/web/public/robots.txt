@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://simonkoeck.com/sitemap-index.xml
+Sitemap: https://paul.koeck.dev/sitemap-index.xml

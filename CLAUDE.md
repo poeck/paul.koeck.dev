@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-Personal portfolio and security vulnerability writeup website for Simon Koeck (simonkoeck.com).
+Personal portfolio and security vulnerability writeup website for Paul Koeck (paul.koeck.dev).
 
 ## Architecture
 
