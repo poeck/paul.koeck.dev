@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "portfolio",
+  "name": "paul-portfolio",
   "compatibility_date": "2026-04-01",
   "compatibility_flags": ["nodejs_compat"],
   "assets": {
@@ -9,13 +9,13 @@
   "kv_namespaces": [
     {
       "binding": "ENGAGEMENT",
-      "id": "118ad892b215414fb9ed8a1c00d6e868",
+      "id": "70711b2e1cc94955844a3b380e0f1b25",
     },
   ],
   "ratelimits": [
     {
       "name": "RATE_LIMITER",
-      "namespace_id": "1001",
+      "namespace_id": "1002",
       "simple": {
         "limit": 20,
         "period": 60,
